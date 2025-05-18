@@ -1,5 +1,5 @@
 
-import { Content } from "@/data/content";
+import { Content } from "@/services/juriflix";
 import ContentCard from "./ContentCard";
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,8 @@ const ContentRow = ({ title, contents }: ContentRowProps) => {
     }
   };
 
+  if (contents.length === 0) return null;
+
   return (
     <div className="relative px-4 md:px-10 mb-8">
       <h2 className="text-netflix-white text-xl font-bold mb-4">{title}</h2>
@@ -66,7 +68,7 @@ const ContentRow = ({ title, contents }: ContentRowProps) => {
           ))}
         </div>
 
-        {showRightArrow && (
+        {showRightArrow && contents.length > 3 && (
           <Button
             onClick={() => scroll('right')}
             className={cn(

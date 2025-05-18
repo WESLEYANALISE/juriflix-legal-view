@@ -1,5 +1,5 @@
 
-import { Content } from "@/data/content";
+import { Content } from "@/services/juriflix";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { useState } from "react";
@@ -11,13 +11,29 @@ interface HeroProps {
 
 const Hero = ({ content }: HeroProps) => {
   const [trailerOpen, setTrailerOpen] = useState(false);
+  
+  // Extract YouTube ID from URL if it's a full URL
+  const getYoutubeEmbedUrl = (url: string) => {
+    if (!url) return '';
+    
+    // If it's already just an ID, use it directly
+    if (!url.includes('/') && !url.includes('.')) {
+      return `https://www.youtube.com/embed/${url}`;
+    }
+    
+    // Try to extract ID from various YouTube URL formats
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    
+    return match ? `https://www.youtube.com/embed/${match[1]}` : url;
+  };
 
   return (
     <div className="relative h-[70vh] md:h-[95vh] w-full">
       <div className="absolute inset-0">
         <img 
-          src={content.coverImage} 
-          alt={content.title} 
+          src={content.capa} 
+          alt={content.nome} 
           className="object-cover w-full h-full"
         />
         {/* Gradient overlay */}
@@ -25,23 +41,27 @@ const Hero = ({ content }: HeroProps) => {
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 p-8 md:p-20 space-y-4 z-10">
-        <h1 className="text-4xl md:text-6xl font-bold text-netflix-white">{content.title}</h1>
+        <h1 className="text-4xl md:text-6xl font-bold text-netflix-white">{content.nome}</h1>
         <div className="flex items-center space-x-2 text-sm text-netflix-white/70">
-          <span>{content.year}</span>
+          <span>{content.ano}</span>
           <span className="w-1 h-1 rounded-full bg-netflix-white/70"></span>
-          <span className="capitalize">{content.type}</span>
-          <span className="w-1 h-1 rounded-full bg-netflix-white/70"></span>
-          <span>{content.categories.join(", ")}</span>
+          <span className="capitalize">{content.tipo}</span>
+          {content.nota && (
+            <>
+              <span className="w-1 h-1 rounded-full bg-netflix-white/70"></span>
+              <span>Nota: {content.nota}</span>
+            </>
+          )}
         </div>
         <p className="text-netflix-white/90 max-w-xl line-clamp-3 md:line-clamp-4">
-          {content.synopsis}
+          {content.sinopse}
         </p>
         <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-2">
           <Button 
-            onClick={() => window.open(content.streamingUrl, "_blank")}
+            onClick={() => window.open(content.link, "_blank")}
             className="bg-netflix-red hover:bg-netflix-red/80 text-white"
           >
-            Assistir no {content.streamingPlatform}
+            Assistir no {content.plataforma}
           </Button>
           <Button 
             variant="outline" 
@@ -58,9 +78,9 @@ const Hero = ({ content }: HeroProps) => {
         <DialogContent className="max-w-3xl p-0 bg-netflix-black border-netflix-gray">
           <div className="aspect-video w-full">
             <iframe 
-              src={`${content.trailerUrl}?autoplay=1`} 
+              src={`${getYoutubeEmbedUrl(content.trailer)}?autoplay=1`} 
               className="w-full h-full" 
-              title={`${content.title} trailer`}
+              title={`${content.nome} trailer`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
