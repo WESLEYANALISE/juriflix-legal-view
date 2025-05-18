@@ -5,31 +5,85 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import ContentDetail from "./ContentDetail";
 
 interface ContentCardProps {
   content: Content;
   className?: string;
+  viewMode?: "grid" | "list";
 }
 
-const ContentCard = ({ content, className }: ContentCardProps) => {
+const ContentCard = ({ content, className, viewMode = "grid" }: ContentCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
-  
-  // Extract YouTube ID from URL
-  const getYoutubeEmbedUrl = (url: string) => {
-    if (!url) return '';
-    
-    // If it's already just an ID, use it directly
-    if (!url.includes('/') && !url.includes('.')) {
-      return `https://www.youtube.com/embed/${url}`;
-    }
-    
-    // Try to extract ID from various YouTube URL formats
-    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-    const match = url.match(regex);
-    
-    return match ? `https://www.youtube.com/embed/${match[1]}` : url;
-  };
+
+  if (viewMode === "list") {
+    return (
+      <>
+        <div 
+          className="flex bg-netflix-dark hover:bg-netflix-dark/70 rounded-md overflow-hidden cursor-pointer transition-colors"
+          onClick={() => setDetailsOpen(true)}
+        >
+          <div className="w-[100px] h-[150px] flex-shrink-0">
+            <img 
+              src={content.capa} 
+              alt={content.nome} 
+              className="object-cover w-full h-full"
+            />
+          </div>
+          
+          <div className="p-4 flex flex-col justify-between flex-grow">
+            <div>
+              <h3 className="text-netflix-white font-semibold mb-1">{content.nome}</h3>
+              <div className="flex items-center space-x-2 text-sm text-netflix-white/70">
+                <span>{content.ano}</span>
+                <span className="w-1 h-1 rounded-full bg-netflix-white/70"></span>
+                <span className="capitalize">{content.tipo}</span>
+                {content.nota && (
+                  <>
+                    <span className="w-1 h-1 rounded-full bg-netflix-white/70"></span>
+                    <span>Nota: {content.nota}</span>
+                  </>
+                )}
+              </div>
+              <p className="text-netflix-white/90 text-sm mt-2 line-clamp-2">{content.sinopse}</p>
+            </div>
+            
+            <div className="flex items-center mt-3 space-x-2">
+              <Button 
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(content.link, "_blank");
+                }}
+                className="bg-netflix-red hover:bg-netflix-red/80 text-white text-xs"
+              >
+                {content.plataforma}
+              </Button>
+              
+              <Button 
+                size="sm"
+                variant="outline"
+                className="bg-netflix-gray/80 text-white hover:bg-netflix-gray border-netflix-gray/50 text-xs"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDetailsOpen(true);
+                }}
+              >
+                <Play className="h-3 w-3 mr-1" /> Trailer
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+          <DialogContent className="max-w-4xl p-0 bg-netflix-dark border-netflix-gray overflow-auto max-h-[90vh]">
+            <ContentDetail content={content} />
+          </DialogContent>
+        </Dialog>
+      </>
+    );
+  }
 
   return (
     <>
@@ -79,53 +133,8 @@ const ContentCard = ({ content, className }: ContentCardProps) => {
       </div>
 
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="max-w-3xl p-0 bg-netflix-dark border-netflix-gray overflow-hidden">
-          <div className="relative">
-            <div className="aspect-video w-full overflow-hidden">
-              <iframe 
-                src={getYoutubeEmbedUrl(content.trailer)} 
-                className="w-full h-full" 
-                title={`${content.nome} trailer`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-            
-            <div className="p-6 space-y-4">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h2 className="text-2xl font-bold text-netflix-white">{content.nome}</h2>
-                  <div className="flex items-center space-x-2 text-sm text-netflix-white/70 mt-1">
-                    <span>{content.ano}</span>
-                    <span className="w-1 h-1 rounded-full bg-netflix-white/70"></span>
-                    <span className="capitalize">{content.tipo}</span>
-                    {content.nota && (
-                      <>
-                        <span className="w-1 h-1 rounded-full bg-netflix-white/70"></span>
-                        <span>Nota: {content.nota}</span>
-                      </>
-                    )}
-                  </div>
-                </div>
-                
-                <Button 
-                  onClick={() => window.open(content.link, "_blank")}
-                  className="bg-netflix-red hover:bg-netflix-red/80 text-white"
-                >
-                  {content.plataforma}
-                </Button>
-              </div>
-              
-              <p className="text-netflix-white/90">{content.sinopse}</p>
-              
-              {content.beneficios && (
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold text-netflix-white mb-2">Benefícios para Estudantes de Direito:</h3>
-                  <p className="text-netflix-white/90">{content.beneficios}</p>
-                </div>
-              )}
-            </div>
-          </div>
+        <DialogContent className="max-w-4xl p-0 bg-netflix-dark border-netflix-gray overflow-auto max-h-[90vh]">
+          <ContentDetail content={content} />
         </DialogContent>
       </Dialog>
     </>

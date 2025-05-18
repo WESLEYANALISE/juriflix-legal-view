@@ -9,9 +9,10 @@ import { cn } from "@/lib/utils";
 interface ContentRowProps {
   title: string;
   contents: Content[];
+  viewMode?: "grid" | "list";
 }
 
-const ContentRow = ({ title, contents }: ContentRowProps) => {
+const ContentRow = ({ title, contents, viewMode = "grid" }: ContentRowProps) => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -46,39 +47,47 @@ const ContentRow = ({ title, contents }: ContentRowProps) => {
     <div className="relative px-4 md:px-10 mb-8">
       <h2 className="text-netflix-white text-xl font-bold mb-4">{title}</h2>
       
-      <div className="relative group">
-        {showLeftArrow && (
-          <Button
-            onClick={() => scroll('left')}
-            className="absolute left-0 z-10 top-1/2 -translate-y-1/2 w-10 h-20 bg-netflix-black/50 hover:bg-netflix-black/80 rounded-r-md"
-          >
-            <ArrowLeft className="text-netflix-white" />
-          </Button>
-        )}
+      {viewMode === "grid" ? (
+        <div className="relative group">
+          {showLeftArrow && (
+            <Button
+              onClick={() => scroll('left')}
+              className="absolute left-0 z-10 top-1/2 -translate-y-1/2 w-10 h-20 bg-netflix-black/50 hover:bg-netflix-black/80 rounded-r-md"
+            >
+              <ArrowLeft className="text-netflix-white" />
+            </Button>
+          )}
 
-        <div 
-          className="flex overflow-x-auto space-x-4 no-scrollbar scroll-smooth"
-          ref={sliderRef}
-          onScroll={handleScroll}
-        >
+          <div 
+            className="flex overflow-x-auto space-x-4 no-scrollbar scroll-smooth"
+            ref={sliderRef}
+            onScroll={handleScroll}
+          >
+            {contents.map((content) => (
+              <div key={content.id} className="flex-shrink-0 w-[180px] md:w-[240px]">
+                <ContentCard content={content} />
+              </div>
+            ))}
+          </div>
+
+          {showRightArrow && contents.length > 3 && (
+            <Button
+              onClick={() => scroll('right')}
+              className={cn(
+                "absolute right-0 z-10 top-1/2 -translate-y-1/2 w-10 h-20 bg-netflix-black/50 hover:bg-netflix-black/80 rounded-l-md"
+              )}
+            >
+              <ArrowRight className="text-netflix-white" />
+            </Button>
+          )}
+        </div>
+      ) : (
+        <div className="grid gap-4">
           {contents.map((content) => (
-            <div key={content.id} className="flex-shrink-0 w-[180px] md:w-[240px]">
-              <ContentCard content={content} />
-            </div>
+            <ContentCard key={content.id} content={content} viewMode="list" />
           ))}
         </div>
-
-        {showRightArrow && contents.length > 3 && (
-          <Button
-            onClick={() => scroll('right')}
-            className={cn(
-              "absolute right-0 z-10 top-1/2 -translate-y-1/2 w-10 h-20 bg-netflix-black/50 hover:bg-netflix-black/80 rounded-l-md"
-            )}
-          >
-            <ArrowRight className="text-netflix-white" />
-          </Button>
-        )}
-      </div>
+      )}
     </div>
   );
 };

@@ -4565,6 +4565,48 @@ export type Database = {
           },
         ]
       }
+      user_course_completed: {
+        Row: {
+          course_id: number
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          course_id: number
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: number
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_course_favorites: {
+        Row: {
+          course_id: number
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          course_id: number
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: number
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_flashcards: {
         Row: {
           conhecimento: number | null
@@ -5173,6 +5215,10 @@ export type Database = {
         Returns: undefined
       }
       migrate_flashcards_data: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      migrate_mapas_mentais_data: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
