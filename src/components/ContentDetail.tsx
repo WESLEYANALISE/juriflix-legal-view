@@ -29,22 +29,23 @@ const ContentDetail = ({ content }: ContentDetailProps) => {
   };
 
   return (
-    <div className="relative">
-      {/* Prominent Close Button */}
-      <DialogClose className="absolute right-4 top-4 z-50">
+    <div className="relative bg-netflix-black rounded-lg">
+      {/* Prominent Close Button - Made larger and more visible */}
+      <DialogClose className="absolute right-2 top-2 z-50">
         <Button 
           size="icon" 
           variant="outline" 
-          className="h-8 w-8 rounded-full bg-netflix-black/70 border-netflix-gray hover:bg-netflix-red"
+          className="h-10 w-10 rounded-full bg-netflix-black/80 border-netflix-gray hover:bg-netflix-red"
         >
-          <X className="h-4 w-4" />
+          <X className="h-5 w-5 text-white" />
           <span className="sr-only">Fechar</span>
         </Button>
       </DialogClose>
       
-      <div className="flex flex-col md:flex-row overflow-hidden max-h-[85vh]">
-        <div className="md:w-1/3 md:p-6 p-4">
-          <div className="aspect-[2/3] w-full rounded-md overflow-hidden sticky top-0">
+      <div className="flex flex-col md:flex-row overflow-auto max-h-[80vh]">
+        {/* Cover Image - Reduced size, removed sticky positioning */}
+        <div className="md:w-1/4 p-4 flex-shrink-0">
+          <div className="aspect-[2/3] w-full rounded-md overflow-hidden">
             <img 
               src={content.capa} 
               alt={content.nome} 
@@ -53,8 +54,9 @@ const ContentDetail = ({ content }: ContentDetailProps) => {
           </div>
         </div>
         
-        <div className="md:w-2/3 p-6 overflow-y-auto max-h-[85vh]">
-          <h1 className="text-3xl md:text-4xl font-bold text-netflix-white">{content.nome}</h1>
+        {/* Content Details - Expanded width */}
+        <div className="md:w-3/4 p-4 overflow-y-auto">
+          <h1 className="text-2xl md:text-3xl font-bold text-netflix-white">{content.nome}</h1>
           
           <div className="flex items-center space-x-2 text-sm text-netflix-white/70 mt-2">
             <span>{content.ano}</span>
@@ -71,14 +73,14 @@ const ContentDetail = ({ content }: ContentDetailProps) => {
           <div className="flex flex-wrap items-center gap-3 mt-4">
             <Button 
               onClick={() => window.open(content.link, "_blank")}
-              className="bg-netflix-red hover:bg-netflix-red/80 text-white flex-grow md:flex-grow-0"
+              className="bg-netflix-red hover:bg-netflix-red/80 text-white"
             >
               Assistir no {content.plataforma}
             </Button>
             <Button 
               variant="outline" 
               onClick={() => setTrailerOpen(true)}
-              className="bg-netflix-gray/60 text-white hover:bg-netflix-gray border-netflix-gray/50 flex-grow md:flex-grow-0"
+              className="bg-netflix-gray/60 text-white hover:bg-netflix-gray border-netflix-gray/50"
             >
               <Play size={16} className="mr-2" /> Ver Trailer
             </Button>
@@ -86,7 +88,7 @@ const ContentDetail = ({ content }: ContentDetailProps) => {
           
           <div className="mt-6">
             <h3 className="text-lg font-semibold text-netflix-white mb-2">Sinopse</h3>
-            <div className="text-netflix-white/90 overflow-y-auto">
+            <div className="text-netflix-white/90 max-h-32 md:max-h-none overflow-y-auto">
               {content.sinopse}
             </div>
           </div>
@@ -94,7 +96,7 @@ const ContentDetail = ({ content }: ContentDetailProps) => {
           {content.beneficios && (
             <div className="mt-6">
               <h3 className="text-lg font-semibold text-netflix-white mb-2">Benefícios para Estudantes de Direito:</h3>
-              <div className="text-netflix-white/90 overflow-y-auto">
+              <div className="text-netflix-white/90 max-h-32 md:max-h-none overflow-y-auto">
                 {content.beneficios}
               </div>
             </div>
