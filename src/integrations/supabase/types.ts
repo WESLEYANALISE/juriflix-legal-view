@@ -4565,6 +4565,27 @@ export type Database = {
           },
         ]
       }
+      user_course_completed: {
+        Row: {
+          course_id: number
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          course_id: number
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: number
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_course_favorites: {
         Row: {
           course_id: number
