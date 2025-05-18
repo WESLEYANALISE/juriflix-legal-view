@@ -7,6 +7,7 @@ import { Content, getAllContent, getContentByType } from "@/services/juriflix";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Search, List, Filter, Shuffle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Index = () => {
