@@ -18,10 +18,10 @@ const Index = () => {
     const fetchContent = async () => {
       setIsLoading(true);
       try {
-        // Get all types of content
-        const movieData = await getContentByType('filme');
-        const seriesData = await getContentByType('serie');
-        const documentaryData = await getContentByType('documentario');
+        // Get all types of content with correct casing as stored in the database
+        const movieData = await getContentByType('Filme');
+        const seriesData = await getContentByType('Séries');
+        const documentaryData = await getContentByType('Documentários');
         
         setMovies(movieData);
         setSeries(seriesData);
