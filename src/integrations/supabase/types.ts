@@ -2600,48 +2600,6 @@ export type Database = {
           },
         ]
       }
-      juriflix: {
-        Row: {
-          ano: string | null
-          beneficios: string | null
-          capa: string | null
-          id: number
-          link: string | null
-          nome: string | null
-          nota: string | null
-          plataforma: string | null
-          sinopse: string | null
-          tipo: string | null
-          trailer: string | null
-        }
-        Insert: {
-          ano?: string | null
-          beneficios?: string | null
-          capa?: string | null
-          id?: number
-          link?: string | null
-          nome?: string | null
-          nota?: string | null
-          plataforma?: string | null
-          sinopse?: string | null
-          tipo?: string | null
-          trailer?: string | null
-        }
-        Update: {
-          ano?: string | null
-          beneficios?: string | null
-          capa?: string | null
-          id?: number
-          link?: string | null
-          nome?: string | null
-          nota?: string | null
-          plataforma?: string | null
-          sinopse?: string | null
-          tipo?: string | null
-          trailer?: string | null
-        }
-        Relationships: []
-      }
       JURIFY: {
         Row: {
           area: string | null
@@ -3046,6 +3004,62 @@ export type Database = {
           mapa?: string | null
         }
         Relationships: []
+      }
+      mindmap_areas: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      mindmap_topics: {
+        Row: {
+          area_id: string | null
+          created_at: string
+          description: string | null
+          drive_link: string
+          id: string
+          title: string
+        }
+        Insert: {
+          area_id?: string | null
+          created_at?: string
+          description?: string | null
+          drive_link: string
+          id?: string
+          title: string
+        }
+        Update: {
+          area_id?: string | null
+          created_at?: string
+          description?: string | null
+          drive_link?: string
+          id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mindmap_topics_area_id_fkey"
+            columns: ["area_id"]
+            isOneToOne: false
+            referencedRelation: "mindmap_areas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       modelos_peticoes: {
         Row: {

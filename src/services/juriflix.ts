@@ -17,7 +17,7 @@ export interface Content {
 
 export async function getAllContent(): Promise<Content[]> {
   const { data, error } = await supabase
-    .from('juriflix')
+    .from('Jurisflix')
     .select('*')
     .order('nome');
 
@@ -31,7 +31,7 @@ export async function getAllContent(): Promise<Content[]> {
 
 export async function getContentByType(type: string): Promise<Content[]> {
   const { data, error } = await supabase
-    .from('juriflix')
+    .from('Jurisflix')
     .select('*')
     .eq('tipo', type)
     .order('nome');
