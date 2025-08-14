@@ -19,7 +19,7 @@ export interface Content {
 export async function getAllContent(): Promise<Content[]> {
   const { data, error } = await supabase
     .from('Jurisflix')
-    .select('*, "link Video" as linkVideo')
+    .select('*, linkVideo:"link Video"')
     .order('nome');
 
   if (error) {
@@ -33,7 +33,7 @@ export async function getAllContent(): Promise<Content[]> {
 export async function getContentByType(type: string): Promise<Content[]> {
   const { data, error } = await supabase
     .from('Jurisflix')
-    .select('*, "link Video" as linkVideo')
+    .select('*, linkVideo:"link Video"')
     .eq('tipo', type)
     .order('nome');
 

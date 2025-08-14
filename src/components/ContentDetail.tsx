@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Play, X } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
+import VideoPlayer from "./VideoPlayer";
 
 interface ContentDetailProps {
   content: Content;
@@ -11,6 +12,7 @@ interface ContentDetailProps {
 
 const ContentDetail = ({ content }: ContentDetailProps) => {
   const [trailerOpen, setTrailerOpen] = useState(false);
+  const [videoPlayerOpen, setVideoPlayerOpen] = useState(false);
   const [showFullSynopsis, setShowFullSynopsis] = useState(false);
   const [showFullBenefits, setShowFullBenefits] = useState(false);
   
@@ -111,6 +113,14 @@ const ContentDetail = ({ content }: ContentDetailProps) => {
           )}
           
           <div className="flex flex-wrap gap-3 mt-6">
+            {content.linkVideo && (
+              <Button 
+                onClick={() => setVideoPlayerOpen(true)}
+                className="bg-netflix-red hover:bg-netflix-red/80 text-white"
+              >
+                <Play size={16} className="mr-2" /> Assistir no App
+              </Button>
+            )}
             <Button 
               onClick={() => window.open(content.link, "_blank")}
               className="bg-netflix-red hover:bg-netflix-red/80 text-white"
@@ -142,6 +152,13 @@ const ContentDetail = ({ content }: ContentDetailProps) => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Video Player */}
+      <VideoPlayer 
+        content={content}
+        isOpen={videoPlayerOpen}
+        onClose={() => setVideoPlayerOpen(false)}
+      />
     </div>
   );
 };

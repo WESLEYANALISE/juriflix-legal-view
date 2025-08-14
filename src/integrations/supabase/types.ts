@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "12.2.3 (519615d)"
+  }
   public: {
     Tables: {
       annotations: {
@@ -42,6 +47,200 @@ export type Database = {
           law_id?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      APP: {
+        Row: {
+          descricao: string | null
+          funcao: string | null
+          id: number
+          link: string | null
+        }
+        Insert: {
+          descricao?: string | null
+          funcao?: string | null
+          id?: number
+          link?: string | null
+        }
+        Update: {
+          descricao?: string | null
+          funcao?: string | null
+          id?: number
+          link?: string | null
+        }
+        Relationships: []
+      }
+      app_users: {
+        Row: {
+          created_at: string | null
+          device_id: string
+          id: string
+          last_seen: string | null
+          preferences: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          device_id: string
+          id?: string
+          last_seen?: string | null
+          preferences?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          device_id?: string
+          id?: string
+          last_seen?: string | null
+          preferences?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      article_annotations: {
+        Row: {
+          annotation_text: string
+          article_id: number
+          created_at: string | null
+          id: string
+          law_table: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          annotation_text: string
+          article_id: number
+          created_at?: string | null
+          id?: string
+          law_table: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          annotation_text?: string
+          article_id?: number
+          created_at?: string | null
+          id?: string
+          law_table?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      article_comments: {
+        Row: {
+          article_id: string
+          content: string
+          created_at: string
+          id: string
+          is_recommended: boolean | null
+          likes_count: number | null
+          parent_id: string | null
+          tag: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          article_id: string
+          content: string
+          created_at?: string
+          id?: string
+          is_recommended?: boolean | null
+          likes_count?: number | null
+          parent_id?: string | null
+          tag?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          article_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_recommended?: boolean | null
+          likes_count?: number | null
+          parent_id?: string | null
+          tag?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "article_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      article_text_annotations: {
+        Row: {
+          annotation_text: string | null
+          article_id: number
+          created_at: string
+          highlight_color: string | null
+          id: string
+          selected_text: string
+          text_position_end: number
+          text_position_start: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          annotation_text?: string | null
+          article_id: number
+          created_at?: string
+          highlight_color?: string | null
+          id?: string
+          selected_text: string
+          text_position_end: number
+          text_position_start: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          annotation_text?: string | null
+          article_id?: number
+          created_at?: string
+          highlight_color?: string | null
+          id?: string
+          selected_text?: string
+          text_position_end?: number
+          text_position_start?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      Artigo_comentado: {
+        Row: {
+          abreviacao: string | null
+          area: string | null
+          artigo: string | null
+          created_at: string
+          id: number
+          link: string | null
+          numero: string | null
+        }
+        Insert: {
+          abreviacao?: string | null
+          area?: string | null
+          artigo?: string | null
+          created_at?: string
+          id?: number
+          link?: string | null
+          numero?: string | null
+        }
+        Update: {
+          abreviacao?: string | null
+          area?: string | null
+          artigo?: string | null
+          created_at?: string
+          id?: number
+          link?: string | null
+          numero?: string | null
         }
         Relationships: []
       }
@@ -88,6 +287,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      biblioteca_classicos: {
+        Row: {
+          area: string | null
+          created_at: string
+          download: string | null
+          favorito: string | null
+          id: number
+          imagem: string | null
+          link: string | null
+          livro: string | null
+          progresso: string | null
+          sobre: string | null
+        }
+        Insert: {
+          area?: string | null
+          created_at?: string
+          download?: string | null
+          favorito?: string | null
+          id?: number
+          imagem?: string | null
+          link?: string | null
+          livro?: string | null
+          progresso?: string | null
+          sobre?: string | null
+        }
+        Update: {
+          area?: string | null
+          created_at?: string
+          download?: string | null
+          favorito?: string | null
+          id?: number
+          imagem?: string | null
+          link?: string | null
+          livro?: string | null
+          progresso?: string | null
+          sobre?: string | null
+        }
+        Relationships: []
       }
       biblioteca_html: {
         Row: {
@@ -271,6 +509,84 @@ export type Database = {
           area: string | null
           created_at: string
           download: string | null
+          favorito: string | null
+          id: number
+          imagem: string | null
+          link: string | null
+          livro: string | null
+          progresso: string | null
+          sobre: string | null
+        }
+        Insert: {
+          area?: string | null
+          created_at?: string
+          download?: string | null
+          favorito?: string | null
+          id?: number
+          imagem?: string | null
+          link?: string | null
+          livro?: string | null
+          progresso?: string | null
+          sobre?: string | null
+        }
+        Update: {
+          area?: string | null
+          created_at?: string
+          download?: string | null
+          favorito?: string | null
+          id?: number
+          imagem?: string | null
+          link?: string | null
+          livro?: string | null
+          progresso?: string | null
+          sobre?: string | null
+        }
+        Relationships: []
+      }
+      biblioteca_juridica_duplicate: {
+        Row: {
+          area: string | null
+          created_at: string
+          download: string | null
+          favorito: string | null
+          id: number
+          imagem: string | null
+          link: string | null
+          livro: string | null
+          progresso: string | null
+          sobre: string | null
+        }
+        Insert: {
+          area?: string | null
+          created_at?: string
+          download?: string | null
+          favorito?: string | null
+          id?: number
+          imagem?: string | null
+          link?: string | null
+          livro?: string | null
+          progresso?: string | null
+          sobre?: string | null
+        }
+        Update: {
+          area?: string | null
+          created_at?: string
+          download?: string | null
+          favorito?: string | null
+          id?: number
+          imagem?: string | null
+          link?: string | null
+          livro?: string | null
+          progresso?: string | null
+          sobre?: string | null
+        }
+        Relationships: []
+      }
+      biblioteca_juridica_free: {
+        Row: {
+          area: string | null
+          created_at: string
+          download: string | null
           favorito: boolean | null
           id: number
           imagem: string | null
@@ -448,6 +764,45 @@ export type Database = {
           },
         ]
       }
+      biblioteca_livros: {
+        Row: {
+          area: string | null
+          created_at: string
+          download: string | null
+          favorito: string | null
+          id: number
+          imagem: string | null
+          link: string | null
+          livro: string | null
+          progresso: string | null
+          sobre: string | null
+        }
+        Insert: {
+          area?: string | null
+          created_at?: string
+          download?: string | null
+          favorito?: string | null
+          id?: number
+          imagem?: string | null
+          link?: string | null
+          livro?: string | null
+          progresso?: string | null
+          sobre?: string | null
+        }
+        Update: {
+          area?: string | null
+          created_at?: string
+          download?: string | null
+          favorito?: string | null
+          id?: number
+          imagem?: string | null
+          link?: string | null
+          livro?: string | null
+          progresso?: string | null
+          sobre?: string | null
+        }
+        Relationships: []
+      }
       biblioteca_marcadores: {
         Row: {
           cor: string | null
@@ -519,6 +874,246 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_article_comments: {
+        Row: {
+          article_id: string
+          content: string
+          created_at: string
+          id: string
+          likes_count: number | null
+          parent_id: string | null
+          updated_at: string
+          user_email: string | null
+          user_name: string
+        }
+        Insert: {
+          article_id: string
+          content: string
+          created_at?: string
+          id?: string
+          likes_count?: number | null
+          parent_id?: string | null
+          updated_at?: string
+          user_email?: string | null
+          user_name: string
+        }
+        Update: {
+          article_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          likes_count?: number | null
+          parent_id?: string | null
+          updated_at?: string
+          user_email?: string | null
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_article_comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "blog_article_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_articles: {
+        Row: {
+          author: string
+          category: string
+          content: string
+          created_at: string
+          excerpt: string | null
+          id: string
+          image_url: string | null
+          meta_description: string | null
+          published_date: string | null
+          read_time: string | null
+          slug: string | null
+          status: string | null
+          title: string
+          updated_at: string
+          views: number | null
+        }
+        Insert: {
+          author: string
+          category: string
+          content: string
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          image_url?: string | null
+          meta_description?: string | null
+          published_date?: string | null
+          read_time?: string | null
+          slug?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string
+          views?: number | null
+        }
+        Update: {
+          author?: string
+          category?: string
+          content?: string
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          image_url?: string | null
+          meta_description?: string | null
+          published_date?: string | null
+          read_time?: string | null
+          slug?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string
+          views?: number | null
+        }
+        Relationships: []
+      }
+      blog_comment_likes: {
+        Row: {
+          comment_id: string | null
+          created_at: string
+          id: string
+          user_ip: string
+        }
+        Insert: {
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          user_ip: string
+        }
+        Update: {
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          user_ip?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "blog_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_comment_user_likes: {
+        Row: {
+          comment_id: string
+          created_at: string
+          id: string
+          user_ip: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          id?: string
+          user_ip: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          id?: string
+          user_ip?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_comment_user_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "blog_article_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_comments: {
+        Row: {
+          article_id: string | null
+          content: string
+          created_at: string
+          id: string
+          likes_count: number | null
+          parent_id: string | null
+          updated_at: string
+          user_email: string | null
+          user_name: string
+        }
+        Insert: {
+          article_id?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          likes_count?: number | null
+          parent_id?: string | null
+          updated_at?: string
+          user_email?: string | null
+          user_name: string
+        }
+        Update: {
+          article_id?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          likes_count?: number | null
+          parent_id?: string | null
+          updated_at?: string
+          user_email?: string | null
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_comments_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "blog_articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "blog_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      BLOGER: {
+        Row: {
+          Area: string | null
+          Artigo: string | null
+          Assunto: string | null
+          Capa: string | null
+          Categoria: string | null
+          id: number
+          Sequencia: string | null
+          Tema: string | null
+        }
+        Insert: {
+          Area?: string | null
+          Artigo?: string | null
+          Assunto?: string | null
+          Capa?: string | null
+          Categoria?: string | null
+          id?: number
+          Sequencia?: string | null
+          Tema?: string | null
+        }
+        Update: {
+          Area?: string | null
+          Artigo?: string | null
+          Assunto?: string | null
+          Capa?: string | null
+          Categoria?: string | null
+          id?: number
+          Sequencia?: string | null
+          Tema?: string | null
+        }
+        Relationships: []
+      }
       book_assistant_history: {
         Row: {
           book_id: number
@@ -568,15 +1163,7 @@ export type Database = {
           id?: string
           user_ip?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "book_favorites_book_id_fkey"
-            columns: ["book_id"]
-            isOneToOne: false
-            referencedRelation: "biblioteca_juridica"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       book_notes: {
         Row: {
@@ -648,6 +1235,39 @@ export type Database = {
           },
         ]
       }
+      caca_palavras: {
+        Row: {
+          Area: string | null
+          id: number
+          "Nivel 1": string | null
+          "Nivel 2": string | null
+          "Nivel 3": string | null
+          "Nivel 4": string | null
+          "Nivel 5": string | null
+          Tema: string | null
+        }
+        Insert: {
+          Area?: string | null
+          id?: number
+          "Nivel 1"?: string | null
+          "Nivel 2"?: string | null
+          "Nivel 3"?: string | null
+          "Nivel 4"?: string | null
+          "Nivel 5"?: string | null
+          Tema?: string | null
+        }
+        Update: {
+          Area?: string | null
+          id?: number
+          "Nivel 1"?: string | null
+          "Nivel 2"?: string | null
+          "Nivel 3"?: string | null
+          "Nivel 4"?: string | null
+          "Nivel 5"?: string | null
+          Tema?: string | null
+        }
+        Relationships: []
+      }
       categorias: {
         Row: {
           created_at: string | null
@@ -675,6 +1295,7 @@ export type Database = {
       Código_Civil: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -683,6 +1304,7 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -691,6 +1313,7 @@ export type Database = {
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -702,6 +1325,7 @@ export type Database = {
       Código_de_Defesa_do_Consumidor: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -710,6 +1334,7 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -718,6 +1343,7 @@ export type Database = {
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -729,6 +1355,7 @@ export type Database = {
       Código_de_Processo_Civil: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -737,6 +1364,7 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -745,6 +1373,7 @@ export type Database = {
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -756,6 +1385,7 @@ export type Database = {
       Código_de_Processo_Penal: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -764,6 +1394,7 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -772,6 +1403,7 @@ export type Database = {
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -783,6 +1415,7 @@ export type Database = {
       Código_de_Trânsito_Brasileiro: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -791,6 +1424,7 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -799,6 +1433,7 @@ export type Database = {
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -810,6 +1445,7 @@ export type Database = {
       Código_Eleitoral: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -818,14 +1454,16 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
-          id: number
+          id?: number
           numero?: string | null
           tecnica?: string | null
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -837,6 +1475,7 @@ export type Database = {
       Código_Penal: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -845,6 +1484,7 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -853,6 +1493,7 @@ export type Database = {
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -864,6 +1505,7 @@ export type Database = {
       Código_Tributário_Nacional: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -872,6 +1514,7 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -880,6 +1523,66 @@ export type Database = {
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Relationships: []
+      }
+      comment_likes: {
+        Row: {
+          comment_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "article_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Consolidacao_das_Leis_do_Trabalho: {
+        Row: {
+          artigo: string | null
+          comentario_audio: string | null
+          exemplo: string | null
+          formal: string | null
+          id: number
+          numero: string | null
+          tecnica: string | null
+        }
+        Insert: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Update: {
+          artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -891,6 +1594,7 @@ export type Database = {
       Constituicao_Federal: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -899,6 +1603,7 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -907,6 +1612,7 @@ export type Database = {
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -1043,6 +1749,136 @@ export type Database = {
           sobre?: string | null
         }
         Relationships: []
+      }
+      daily_comment_usage: {
+        Row: {
+          comment_count: number
+          created_at: string
+          date: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment_count?: number
+          created_at?: string
+          date?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment_count?: number
+          created_at?: string
+          date?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      desafio_90_dias: {
+        Row: {
+          concluido: boolean | null
+          created_at: string | null
+          data_inicio: string
+          dia_atual: number | null
+          id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          concluido?: boolean | null
+          created_at?: string | null
+          data_inicio?: string
+          dia_atual?: number | null
+          id?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          concluido?: boolean | null
+          created_at?: string | null
+          data_inicio?: string
+          dia_atual?: number | null
+          id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      desafio_aplicacoes: {
+        Row: {
+          aplicado_manha: boolean | null
+          aplicado_noite: boolean | null
+          created_at: string | null
+          data_aplicacao: string
+          desafio_id: string
+          dia: number
+          id: string
+        }
+        Insert: {
+          aplicado_manha?: boolean | null
+          aplicado_noite?: boolean | null
+          created_at?: string | null
+          data_aplicacao?: string
+          desafio_id: string
+          dia: number
+          id?: string
+        }
+        Update: {
+          aplicado_manha?: boolean | null
+          aplicado_noite?: boolean | null
+          created_at?: string | null
+          data_aplicacao?: string
+          desafio_id?: string
+          dia?: number
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "desafio_aplicacoes_desafio_id_fkey"
+            columns: ["desafio_id"]
+            isOneToOne: false
+            referencedRelation: "desafio_90_dias"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      desafio_fotos: {
+        Row: {
+          created_at: string | null
+          desafio_id: string
+          dia: number
+          foto_url: string
+          id: string
+          observacoes: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          desafio_id: string
+          dia: number
+          foto_url: string
+          id?: string
+          observacoes?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          desafio_id?: string
+          dia?: number
+          foto_url?: string
+          id?: string
+          observacoes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "desafio_fotos_desafio_id_fkey"
+            columns: ["desafio_id"]
+            isOneToOne: false
+            referencedRelation: "desafio_90_dias"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dicionario_juridico: {
         Row: {
@@ -1271,36 +2107,10 @@ export type Database = {
           },
         ]
       }
-      Estatuto_da_Advocacia_e_da_OAB: {
-        Row: {
-          artigo: string | null
-          exemplo: string | null
-          formal: string | null
-          id: number
-          numero: string | null
-          tecnica: string | null
-        }
-        Insert: {
-          artigo?: string | null
-          exemplo?: string | null
-          formal?: string | null
-          id?: number
-          numero?: string | null
-          tecnica?: string | null
-        }
-        Update: {
-          artigo?: string | null
-          exemplo?: string | null
-          formal?: string | null
-          id?: number
-          numero?: string | null
-          tecnica?: string | null
-        }
-        Relationships: []
-      }
       Estatuto_da_Cidade: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -1309,14 +2119,16 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
-          id: number
+          id?: number
           numero?: string | null
           tecnica?: string | null
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -1328,6 +2140,7 @@ export type Database = {
       Estatuto_da_Criança_e_do_Adolescente: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -1336,14 +2149,16 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
-          id: number
+          id?: number
           numero?: string | null
           tecnica?: string | null
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -1355,6 +2170,7 @@ export type Database = {
       Estatuto_da_Igualdade_Racial: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -1363,14 +2179,46 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
-          id: number
+          id?: number
           numero?: string | null
           tecnica?: string | null
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Relationships: []
+      }
+      Estatuto_da_OAB: {
+        Row: {
+          artigo: string | null
+          comentario_audio: string | null
+          exemplo: string | null
+          formal: string | null
+          id: number
+          numero: string | null
+          tecnica: string | null
+        }
+        Insert: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Update: {
+          artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -1382,6 +2230,7 @@ export type Database = {
       Estatuto_da_Pessoa_com_Deficiência: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -1390,41 +2239,16 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
-          exemplo?: string | null
-          formal?: string | null
-          id: number
-          numero?: string | null
-          tecnica?: string | null
-        }
-        Update: {
-          artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
           numero?: string | null
           tecnica?: string | null
         }
-        Relationships: []
-      }
-      Estatuto_da_Terra: {
-        Row: {
-          artigo: string | null
-          exemplo: string | null
-          formal: string | null
-          id: number
-          numero: string | null
-          tecnica: string | null
-        }
-        Insert: {
-          artigo?: string | null
-          exemplo?: string | null
-          formal?: string | null
-          id: number
-          numero?: string | null
-          tecnica?: string | null
-        }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -1436,6 +2260,7 @@ export type Database = {
       Estatuto_do_Desarmamento: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -1444,14 +2269,16 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
-          id: number
+          id?: number
           numero?: string | null
           tecnica?: string | null
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -1463,6 +2290,7 @@ export type Database = {
       Estatuto_do_Idoso: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -1471,14 +2299,16 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
-          id: number
+          id?: number
           numero?: string | null
           tecnica?: string | null
         }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -1490,6 +2320,7 @@ export type Database = {
       Estatuto_do_Torcedor: {
         Row: {
           artigo: string | null
+          comentario_audio: string | null
           exemplo: string | null
           formal: string | null
           id: number
@@ -1498,41 +2329,16 @@ export type Database = {
         }
         Insert: {
           artigo?: string | null
-          exemplo?: string | null
-          formal?: string | null
-          id: number
-          numero?: string | null
-          tecnica?: string | null
-        }
-        Update: {
-          artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
           numero?: string | null
           tecnica?: string | null
         }
-        Relationships: []
-      }
-      Estatuto_dos_Servidores_Públicos_Civis_da_União: {
-        Row: {
-          artigo: string | null
-          exemplo: string | null
-          formal: string | null
-          id: number
-          numero: string | null
-          tecnica: string | null
-        }
-        Insert: {
-          artigo?: string | null
-          exemplo?: string | null
-          formal?: string | null
-          id: number
-          numero?: string | null
-          tecnica?: string | null
-        }
         Update: {
           artigo?: string | null
+          comentario_audio?: string | null
           exemplo?: string | null
           formal?: string | null
           id?: number
@@ -1611,6 +2417,36 @@ export type Database = {
         Relationships: []
       }
       flash_cards: {
+        Row: {
+          area: string | null
+          created_at: string
+          exemplo: string | null
+          id: number
+          pergunta: string | null
+          resposta: string | null
+          tema: string | null
+        }
+        Insert: {
+          area?: string | null
+          created_at?: string
+          exemplo?: string | null
+          id?: number
+          pergunta?: string | null
+          resposta?: string | null
+          tema?: string | null
+        }
+        Update: {
+          area?: string | null
+          created_at?: string
+          exemplo?: string | null
+          id?: number
+          pergunta?: string | null
+          resposta?: string | null
+          tema?: string | null
+        }
+        Relationships: []
+      }
+      flash_cards_enigma: {
         Row: {
           area: string | null
           created_at: string
@@ -1779,6 +2615,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      "HARRY POTTER": {
+        Row: {
+          categoria: string | null
+          descricao: string | null
+          id: number
+          imagem1: string | null
+          imagem2: string | null
+          imagem3: string | null
+          imagem4: string | null
+          imagem5: string | null
+          imagem6: string | null
+          imagem7: string | null
+          link: string | null
+          produto: string | null
+          subcategoria: string | null
+          uso: string | null
+          valor: string | null
+          video: string | null
+        }
+        Insert: {
+          categoria?: string | null
+          descricao?: string | null
+          id?: number
+          imagem1?: string | null
+          imagem2?: string | null
+          imagem3?: string | null
+          imagem4?: string | null
+          imagem5?: string | null
+          imagem6?: string | null
+          imagem7?: string | null
+          link?: string | null
+          produto?: string | null
+          subcategoria?: string | null
+          uso?: string | null
+          valor?: string | null
+          video?: string | null
+        }
+        Update: {
+          categoria?: string | null
+          descricao?: string | null
+          id?: number
+          imagem1?: string | null
+          imagem2?: string | null
+          imagem3?: string | null
+          imagem4?: string | null
+          imagem5?: string | null
+          imagem6?: string | null
+          imagem7?: string | null
+          link?: string | null
+          produto?: string | null
+          subcategoria?: string | null
+          uso?: string | null
+          valor?: string | null
+          video?: string | null
+        }
+        Relationships: []
       }
       jogos_alfabeto: {
         Row: {
@@ -2646,6 +3539,7 @@ export type Database = {
           capa: string | null
           id: number
           link: string | null
+          "link Video": string | null
           nome: string | null
           nota: string | null
           plataforma: string | null
@@ -2659,6 +3553,7 @@ export type Database = {
           capa?: string | null
           id?: number
           link?: string | null
+          "link Video"?: string | null
           nome?: string | null
           nota?: string | null
           plataforma?: string | null
@@ -2672,6 +3567,7 @@ export type Database = {
           capa?: string | null
           id?: number
           link?: string | null
+          "link Video"?: string | null
           nome?: string | null
           nota?: string | null
           plataforma?: string | null
@@ -2714,6 +3610,216 @@ export type Database = {
           relator?: string | null
           titulo?: string
           tribunal?: string
+        }
+        Relationships: []
+      }
+      "Lei de Improbidade Administrativa": {
+        Row: {
+          artigo: string | null
+          comentario_audio: string | null
+          exemplo: string | null
+          formal: string | null
+          id: number
+          numero: string | null
+          tecnica: string | null
+        }
+        Insert: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Update: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Relationships: []
+      }
+      "Lei_de_diretrizes_e-bases_da_educação_nacional": {
+        Row: {
+          artigo: string | null
+          comentario_audio: string | null
+          exemplo: string | null
+          formal: string | null
+          id: number
+          numero: string | null
+          tecnica: string | null
+        }
+        Insert: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Update: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Relationships: []
+      }
+      Lei_de_Drogas: {
+        Row: {
+          artigo: string | null
+          comentario_audio: string | null
+          exemplo: string | null
+          formal: string | null
+          id: number
+          numero: string | null
+          tecnica: string | null
+        }
+        Insert: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Update: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Relationships: []
+      }
+      Lei_de_Execução_Penal: {
+        Row: {
+          artigo: string | null
+          comentario_audio: string | null
+          exemplo: string | null
+          formal: string | null
+          id: number
+          numero: string | null
+          tecnica: string | null
+        }
+        Insert: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Update: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Relationships: []
+      }
+      Lei_de_Introdução_às_Normas_do_Direito_Brasileiro: {
+        Row: {
+          artigo: string | null
+          comentario_audio: string | null
+          exemplo: string | null
+          formal: string | null
+          id: number
+          numero: string | null
+          tecnica: string | null
+        }
+        Insert: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Update: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Relationships: []
+      }
+      Lei_de_Licitações: {
+        Row: {
+          artigo: string | null
+          comentario_audio: string | null
+          exemplo: string | null
+          formal: string | null
+          id: number
+          numero: string | null
+          tecnica: string | null
+        }
+        Insert: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Update: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Relationships: []
+      }
+      Lei_Maria_da_Penha: {
+        Row: {
+          artigo: string | null
+          comentario_audio: string | null
+          exemplo: string | null
+          formal: string | null
+          id: number
+          numero: string | null
+          tecnica: string | null
+        }
+        Insert: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
+        }
+        Update: {
+          artigo?: string | null
+          comentario_audio?: string | null
+          exemplo?: string | null
+          formal?: string | null
+          id?: number
+          numero?: string | null
+          tecnica?: string | null
         }
         Relationships: []
       }
@@ -2783,6 +3889,36 @@ export type Database = {
           materia?: string
           titulo?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      livros_de_sucesso: {
+        Row: {
+          capa_area: string | null
+          capa_livros: string | null
+          categoria: string | null
+          id: number
+          link: string | null
+          livro: string | null
+          sinopse: string | null
+        }
+        Insert: {
+          capa_area?: string | null
+          capa_livros?: string | null
+          categoria?: string | null
+          id?: number
+          link?: string | null
+          livro?: string | null
+          sinopse?: string | null
+        }
+        Update: {
+          capa_area?: string | null
+          capa_livros?: string | null
+          categoria?: string | null
+          id?: number
+          link?: string | null
+          livro?: string | null
+          sinopse?: string | null
         }
         Relationships: []
       }
@@ -3061,6 +4197,33 @@ export type Database = {
           },
         ]
       }
+      "MINOXIDIL VIDEOS": {
+        Row: {
+          data: string | null
+          duracao: string | null
+          id: number
+          thumbnail: string | null
+          titulo: string | null
+          video: string | null
+        }
+        Insert: {
+          data?: string | null
+          duracao?: string | null
+          id?: number
+          thumbnail?: string | null
+          titulo?: string | null
+          video?: string | null
+        }
+        Update: {
+          data?: string | null
+          duracao?: string | null
+          id?: number
+          thumbnail?: string | null
+          titulo?: string | null
+          video?: string | null
+        }
+        Relationships: []
+      }
       modelos_peticoes: {
         Row: {
           area: string | null
@@ -3082,6 +4245,57 @@ export type Database = {
           id?: number
           link?: string | null
           total?: string | null
+        }
+        Relationships: []
+      }
+      MUNDODODIREITO: {
+        Row: {
+          categoria: string | null
+          descricao: string | null
+          id: number
+          imagem1: string | null
+          link: string | null
+          produto: string | null
+          valor: string | null
+          video: string | null
+        }
+        Insert: {
+          categoria?: string | null
+          descricao?: string | null
+          id?: number
+          imagem1?: string | null
+          link?: string | null
+          produto?: string | null
+          valor?: string | null
+          video?: string | null
+        }
+        Update: {
+          categoria?: string | null
+          descricao?: string | null
+          id?: number
+          imagem1?: string | null
+          link?: string | null
+          produto?: string | null
+          valor?: string | null
+          video?: string | null
+        }
+        Relationships: []
+      }
+      musicasharrypotter: {
+        Row: {
+          "explorar-categoria": string | null
+          id: number
+          intro: string | null
+        }
+        Insert: {
+          "explorar-categoria"?: string | null
+          id?: number
+          intro?: string | null
+        }
+        Update: {
+          "explorar-categoria"?: string | null
+          id?: number
+          intro?: string | null
         }
         Relationships: []
       }
@@ -3462,30 +4676,229 @@ export type Database = {
         }
         Relationships: []
       }
+      premium_orders: {
+        Row: {
+          amount: number
+          created_at: string | null
+          currency: string | null
+          id: string
+          status: string | null
+          stripe_session_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          status?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          status?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      product_clicks: {
+        Row: {
+          click_type: string
+          clicked_at: string | null
+          created_at: string | null
+          device_id: string
+          id: string
+          product_id: number
+          user_id: string | null
+        }
+        Insert: {
+          click_type?: string
+          clicked_at?: string | null
+          created_at?: string | null
+          device_id: string
+          id?: string
+          product_id: number
+          user_id?: string | null
+        }
+        Update: {
+          click_type?: string
+          clicked_at?: string | null
+          created_at?: string | null
+          device_id?: string
+          id?: string
+          product_id?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_clicks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_purchases: {
+        Row: {
+          created_at: string | null
+          id: string
+          product_category: string | null
+          product_id: number
+          product_name: string | null
+          product_value: string | null
+          purchased_at: string | null
+          user_device_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          product_category?: string | null
+          product_id: number
+          product_name?: string | null
+          product_value?: string | null
+          purchased_at?: string | null
+          user_device_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          product_category?: string | null
+          product_id?: number
+          product_name?: string | null
+          product_value?: string | null
+          purchased_at?: string | null
+          user_device_id?: string | null
+        }
+        Relationships: []
+      }
+      product_views: {
+        Row: {
+          id: string
+          product_id: number
+          user_id: string
+          viewed_at: string | null
+        }
+        Insert: {
+          id?: string
+          product_id: number
+          user_id: string
+          viewed_at?: string | null
+        }
+        Update: {
+          id?: string
+          product_id?: number
+          user_id?: string
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_views_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           created_at: string | null
           display_name: string | null
           email: string
+          full_name: string | null
           id: string
+          is_admin: boolean | null
+          is_premium: boolean | null
           onboarding_completed: boolean | null
+          premium_expires_at: string | null
+          premium_until: string | null
+          updated_at: string | null
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string | null
           display_name?: string | null
           email: string
+          full_name?: string | null
           id: string
+          is_admin?: boolean | null
+          is_premium?: boolean | null
           onboarding_completed?: boolean | null
+          premium_expires_at?: string | null
+          premium_until?: string | null
+          updated_at?: string | null
         }
         Update: {
           avatar_url?: string | null
           created_at?: string | null
           display_name?: string | null
           email?: string
+          full_name?: string | null
           id?: string
+          is_admin?: boolean | null
+          is_premium?: boolean | null
           onboarding_completed?: boolean | null
+          premium_expires_at?: string | null
+          premium_until?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      progresso_questos1: {
+        Row: {
+          answered_at: string
+          area: string | null
+          assunto: string | null
+          created_at: string
+          id: string
+          is_correct: boolean
+          question_id: number
+          selected_answer: string | null
+          session_id: string | null
+          tema: string | null
+          time_spent: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answered_at?: string
+          area?: string | null
+          assunto?: string | null
+          created_at?: string
+          id?: string
+          is_correct: boolean
+          question_id: number
+          selected_answer?: string | null
+          session_id?: string | null
+          tema?: string | null
+          time_spent?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answered_at?: string
+          area?: string | null
+          assunto?: string | null
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          question_id?: number
+          selected_answer?: string | null
+          session_id?: string | null
+          tema?: string | null
+          time_spent?: number | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -3560,6 +4973,135 @@ export type Database = {
           id?: number
           QuestionText?: string | null
           Tema?: string | null
+        }
+        Relationships: []
+      }
+      Questoes_Comentadas: {
+        Row: {
+          alternativa_a: string | null
+          alternativa_b: string | null
+          alternativa_c: string | null
+          alternativa_d: string | null
+          ano: string | null
+          area: string | null
+          banca: string | null
+          enunciado: string | null
+          exame: string | null
+          id: number
+          justificativa: string | null
+          numero: string | null
+          resposta_correta: string | null
+        }
+        Insert: {
+          alternativa_a?: string | null
+          alternativa_b?: string | null
+          alternativa_c?: string | null
+          alternativa_d?: string | null
+          ano?: string | null
+          area?: string | null
+          banca?: string | null
+          enunciado?: string | null
+          exame?: string | null
+          id?: number
+          justificativa?: string | null
+          numero?: string | null
+          resposta_correta?: string | null
+        }
+        Update: {
+          alternativa_a?: string | null
+          alternativa_b?: string | null
+          alternativa_c?: string | null
+          alternativa_d?: string | null
+          ano?: string | null
+          area?: string | null
+          banca?: string | null
+          enunciado?: string | null
+          exame?: string | null
+          id?: number
+          justificativa?: string | null
+          numero?: string | null
+          resposta_correta?: string | null
+        }
+        Relationships: []
+      }
+      QUESTOES_FINAL: {
+        Row: {
+          A: string | null
+          alternativa_correta: string | null
+          aplicada_em: string | null
+          area: string | null
+          assunto: string | null
+          B: string | null
+          C: string | null
+          D: string | null
+          E: string | null
+          enunciado: string | null
+          id: number
+          justificativa: string | null
+          numero_questao: number | null
+          resposta_correta: string | null
+          tema: string | null
+        }
+        Insert: {
+          A?: string | null
+          alternativa_correta?: string | null
+          aplicada_em?: string | null
+          area?: string | null
+          assunto?: string | null
+          B?: string | null
+          C?: string | null
+          D?: string | null
+          E?: string | null
+          enunciado?: string | null
+          id?: number
+          justificativa?: string | null
+          numero_questao?: number | null
+          resposta_correta?: string | null
+          tema?: string | null
+        }
+        Update: {
+          A?: string | null
+          alternativa_correta?: string | null
+          aplicada_em?: string | null
+          area?: string | null
+          assunto?: string | null
+          B?: string | null
+          C?: string | null
+          D?: string | null
+          E?: string | null
+          enunciado?: string | null
+          id?: number
+          justificativa?: string | null
+          numero_questao?: number | null
+          resposta_correta?: string | null
+          tema?: string | null
+        }
+        Relationships: []
+      }
+      Questoes_Preencher: {
+        Row: {
+          Area: string | null
+          Assunto: string | null
+          Definicao: string | null
+          id: number
+          Tema: string | null
+          Termo: string | null
+        }
+        Insert: {
+          Area?: string | null
+          Assunto?: string | null
+          Definicao?: string | null
+          id?: number
+          Tema?: string | null
+          Termo?: string | null
+        }
+        Update: {
+          Area?: string | null
+          Assunto?: string | null
+          Definicao?: string | null
+          id?: number
+          Tema?: string | null
+          Termo?: string | null
         }
         Relationships: []
       }
@@ -3804,6 +5346,231 @@ export type Database = {
         }
         Relationships: []
       }
+      resumos_favoritos: {
+        Row: {
+          area: string
+          assunto: string
+          assunto_id: number
+          created_at: string
+          id: string
+          modulo: string
+          tema: string
+          user_id: string
+        }
+        Insert: {
+          area: string
+          assunto: string
+          assunto_id: number
+          created_at?: string
+          id?: string
+          modulo: string
+          tema: string
+          user_id: string
+        }
+        Update: {
+          area?: string
+          assunto?: string
+          assunto_id?: number
+          created_at?: string
+          id?: string
+          modulo?: string
+          tema?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      RESUMOS_pro: {
+        Row: {
+          area: string | null
+          exemplo: string | null
+          glossario: string | null
+          id: number
+          mapa_mental: string | null
+          nome_do_modulo: string | null
+          nome_do_tema: string | null
+          numero_do_assunto: string | null
+          numero_do_modulo: string | null
+          numero_do_tema: string | null
+          texto: string | null
+          titulo_do_assunto: string | null
+        }
+        Insert: {
+          area?: string | null
+          exemplo?: string | null
+          glossario?: string | null
+          id?: number
+          mapa_mental?: string | null
+          nome_do_modulo?: string | null
+          nome_do_tema?: string | null
+          numero_do_assunto?: string | null
+          numero_do_modulo?: string | null
+          numero_do_tema?: string | null
+          texto?: string | null
+          titulo_do_assunto?: string | null
+        }
+        Update: {
+          area?: string | null
+          exemplo?: string | null
+          glossario?: string | null
+          id?: number
+          mapa_mental?: string | null
+          nome_do_modulo?: string | null
+          nome_do_tema?: string | null
+          numero_do_assunto?: string | null
+          numero_do_modulo?: string | null
+          numero_do_tema?: string | null
+          texto?: string | null
+          titulo_do_assunto?: string | null
+        }
+        Relationships: []
+      }
+      resumos_recentes: {
+        Row: {
+          accessed_at: string
+          area: string
+          assunto: string
+          assunto_id: number
+          id: string
+          modulo: string
+          tema: string
+          user_id: string
+        }
+        Insert: {
+          accessed_at?: string
+          area: string
+          assunto: string
+          assunto_id: number
+          id?: string
+          modulo: string
+          tema: string
+          user_id: string
+        }
+        Update: {
+          accessed_at?: string
+          area?: string
+          assunto?: string
+          assunto_id?: number
+          id?: string
+          modulo?: string
+          tema?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      roleta_juridica: {
+        Row: {
+          Area: string | null
+          created_at: string | null
+          Dica: string | null
+          id: number
+          Tema: string | null
+          Termo: string | null
+        }
+        Insert: {
+          Area?: string | null
+          created_at?: string | null
+          Dica?: string | null
+          id?: number
+          Tema?: string | null
+          Termo?: string | null
+        }
+        Update: {
+          Area?: string | null
+          created_at?: string | null
+          Dica?: string | null
+          id?: number
+          Tema?: string | null
+          Termo?: string | null
+        }
+        Relationships: []
+      }
+      search_analytics: {
+        Row: {
+          article_number: string | null
+          code_id: string | null
+          created_at: string
+          id: string
+          result_count: number | null
+          search_term: string
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          article_number?: string | null
+          code_id?: string | null
+          created_at?: string
+          id?: string
+          result_count?: number | null
+          search_term: string
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          article_number?: string | null
+          code_id?: string | null
+          created_at?: string
+          id?: string
+          result_count?: number | null
+          search_term?: string
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      SHOPEE: {
+        Row: {
+          categoria: string | null
+          id: number
+          imagem1: string | null
+          imagem2: string | null
+          imagem3: string | null
+          imagem4: string | null
+          imagem5: string | null
+          imagem6: string | null
+          imagem7: string | null
+          link: string | null
+          produto: string | null
+          subcategoria: string | null
+          uso: string | null
+          valor: string | null
+          video: string | null
+        }
+        Insert: {
+          categoria?: string | null
+          id?: number
+          imagem1?: string | null
+          imagem2?: string | null
+          imagem3?: string | null
+          imagem4?: string | null
+          imagem5?: string | null
+          imagem6?: string | null
+          imagem7?: string | null
+          link?: string | null
+          produto?: string | null
+          subcategoria?: string | null
+          uso?: string | null
+          valor?: string | null
+          video?: string | null
+        }
+        Update: {
+          categoria?: string | null
+          id?: number
+          imagem1?: string | null
+          imagem2?: string | null
+          imagem3?: string | null
+          imagem4?: string | null
+          imagem5?: string | null
+          imagem6?: string | null
+          imagem7?: string | null
+          link?: string | null
+          produto?: string | null
+          subcategoria?: string | null
+          uso?: string | null
+          valor?: string | null
+          video?: string | null
+        }
+        Relationships: []
+      }
       simulado_edicoes: {
         Row: {
           ano: number
@@ -3924,7 +5691,10 @@ export type Database = {
           data_inicio: string | null
           edicao_id: string | null
           id: string
+          pausado: boolean | null
           pontuacao: number | null
+          questao_atual: number | null
+          tempo_pausado: number | null
           tempo_total: number | null
           total_questoes: number
           user_id: string
@@ -3938,7 +5708,10 @@ export type Database = {
           data_inicio?: string | null
           edicao_id?: string | null
           id?: string
+          pausado?: boolean | null
           pontuacao?: number | null
+          questao_atual?: number | null
+          tempo_pausado?: number | null
           tempo_total?: number | null
           total_questoes: number
           user_id: string
@@ -3952,7 +5725,10 @@ export type Database = {
           data_inicio?: string | null
           edicao_id?: string | null
           id?: string
+          pausado?: boolean | null
           pontuacao?: number | null
+          questao_atual?: number | null
+          tempo_pausado?: number | null
           tempo_total?: number | null
           total_questoes?: number
           user_id?: string
@@ -4485,6 +6261,207 @@ export type Database = {
         }
         Relationships: []
       }
+      success_book_favorites: {
+        Row: {
+          book_id: number
+          created_at: string | null
+          id: string
+          user_ip: string
+        }
+        Insert: {
+          book_id: number
+          created_at?: string | null
+          id?: string
+          user_ip: string
+        }
+        Update: {
+          book_id?: number
+          created_at?: string | null
+          id?: string
+          user_ip?: string
+        }
+        Relationships: []
+      }
+      success_book_notes: {
+        Row: {
+          book_id: number
+          created_at: string | null
+          id: string
+          note_text: string
+          updated_at: string | null
+          user_ip: string
+        }
+        Insert: {
+          book_id: number
+          created_at?: string | null
+          id?: string
+          note_text: string
+          updated_at?: string | null
+          user_ip: string
+        }
+        Update: {
+          book_id?: number
+          created_at?: string | null
+          id?: string
+          note_text?: string
+          updated_at?: string | null
+          user_ip?: string
+        }
+        Relationships: []
+      }
+      table_name: {
+        Row: {
+          data: Json | null
+          id: number
+          inserted_at: string
+          name: string | null
+          updated_at: string
+        }
+        Insert: {
+          data?: Json | null
+          id?: number
+          inserted_at?: string
+          name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          data?: Json | null
+          id?: number
+          inserted_at?: string
+          name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_achievements: {
+        Row: {
+          achievement_type: string
+          achievement_value: number
+          created_at: string
+          id: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_type: string
+          achievement_value?: number
+          created_at?: string
+          id?: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_type?: string
+          achievement_value?: number
+          created_at?: string
+          id?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_annotations: {
+        Row: {
+          article_id: string
+          category: string | null
+          color: string | null
+          content: string
+          created_at: string
+          id: string
+          is_favorite: boolean | null
+          priority: string | null
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          article_id: string
+          category?: string | null
+          color?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          is_favorite?: boolean | null
+          priority?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          article_id?: string
+          category?: string | null
+          color?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          is_favorite?: boolean | null
+          priority?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_article_favorites: {
+        Row: {
+          article_abbreviation: string | null
+          article_area: string | null
+          article_id: number
+          article_number: string | null
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          article_abbreviation?: string | null
+          article_area?: string | null
+          article_id: number
+          article_number?: string | null
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          article_abbreviation?: string | null
+          article_area?: string | null
+          article_id?: number
+          article_number?: string | null
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_audio_progress: {
+        Row: {
+          article_id: string
+          completed: boolean | null
+          duration: number | null
+          id: string
+          last_played_at: string | null
+          progress_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          article_id: string
+          completed?: boolean | null
+          duration?: number | null
+          id?: string
+          last_played_at?: string | null
+          progress_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          article_id?: string
+          completed?: boolean | null
+          duration?: number | null
+          id?: string
+          last_played_at?: string | null
+          progress_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_badges: {
         Row: {
           achieved: boolean
@@ -4565,6 +6542,30 @@ export type Database = {
           },
         ]
       }
+      user_book_readings: {
+        Row: {
+          book_id: number
+          created_at: string
+          id: string
+          read_date: string
+          user_ip: string
+        }
+        Insert: {
+          book_id: number
+          created_at?: string
+          id?: string
+          read_date?: string
+          user_ip: string
+        }
+        Update: {
+          book_id?: number
+          created_at?: string
+          id?: string
+          read_date?: string
+          user_ip?: string
+        }
+        Relationships: []
+      }
       user_course_completed: {
         Row: {
           course_id: number
@@ -4603,6 +6604,75 @@ export type Database = {
           course_id?: number
           created_at?: string | null
           id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_favorites: {
+        Row: {
+          article_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_flashcard_progress: {
+        Row: {
+          area: string
+          correct_answers: number | null
+          created_at: string | null
+          flashcard_id: number
+          id: string
+          last_studied: string | null
+          mastery_level: string | null
+          needs_review: boolean | null
+          streak_count: number | null
+          tema: string | null
+          total_attempts: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          area: string
+          correct_answers?: number | null
+          created_at?: string | null
+          flashcard_id: number
+          id?: string
+          last_studied?: string | null
+          mastery_level?: string | null
+          needs_review?: boolean | null
+          streak_count?: number | null
+          tema?: string | null
+          total_attempts?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          area?: string
+          correct_answers?: number | null
+          created_at?: string | null
+          flashcard_id?: number
+          id?: string
+          last_studied?: string | null
+          mastery_level?: string | null
+          needs_review?: boolean | null
+          streak_count?: number | null
+          tema?: string | null
+          total_attempts?: number | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -4650,6 +6720,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_playlists: {
+        Row: {
+          areas: string[] | null
+          created_at: string
+          description: string | null
+          exams: string[] | null
+          id: string
+          name: string
+          question_count: number
+          updated_at: string
+          user_id: string
+          years: string[] | null
+        }
+        Insert: {
+          areas?: string[] | null
+          created_at?: string
+          description?: string | null
+          exams?: string[] | null
+          id?: string
+          name: string
+          question_count?: number
+          updated_at?: string
+          user_id: string
+          years?: string[] | null
+        }
+        Update: {
+          areas?: string[] | null
+          created_at?: string
+          description?: string | null
+          exams?: string[] | null
+          id?: string
+          name?: string
+          question_count?: number
+          updated_at?: string
+          user_id?: string
+          years?: string[] | null
+        }
+        Relationships: []
       }
       user_podcast_favorites: {
         Row: {
@@ -4721,6 +6830,63 @@ export type Database = {
           },
         ]
       }
+      user_preferences: {
+        Row: {
+          created_at: string
+          id: string
+          notifications: boolean
+          onboarding_completed: boolean
+          selected_areas: string[]
+          study_goal: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notifications?: boolean
+          onboarding_completed?: boolean
+          selected_areas?: string[]
+          study_goal?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notifications?: boolean
+          onboarding_completed?: boolean
+          selected_areas?: string[]
+          study_goal?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          id: string
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          id: string
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
       user_progresso_disciplinas: {
         Row: {
           anotacoes: string | null
@@ -4770,6 +6936,65 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_question_answers: {
+        Row: {
+          created_at: string
+          id: string
+          is_correct: boolean
+          question_id: number
+          selected_answer: string
+          session_id: string
+          time_spent: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_correct: boolean
+          question_id: number
+          selected_answer: string
+          session_id: string
+          time_spent?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          question_id?: number
+          selected_answer?: string
+          session_id?: string
+          time_spent?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_question_answers_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "user_study_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_question_favorites: {
+        Row: {
+          created_at: string
+          id: string
+          question_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          question_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          question_id?: number
+          user_id?: string
+        }
+        Relationships: []
       }
       user_question_responses: {
         Row: {
@@ -4841,6 +7066,189 @@ export type Database = {
           },
         ]
       }
+      user_reading_limits: {
+        Row: {
+          books_read_count: number
+          created_at: string
+          id: string
+          last_reset_date: string
+          updated_at: string
+          user_ip: string
+        }
+        Insert: {
+          books_read_count?: number
+          created_at?: string
+          id?: string
+          last_reset_date?: string
+          updated_at?: string
+          user_ip: string
+        }
+        Update: {
+          books_read_count?: number
+          created_at?: string
+          id?: string
+          last_reset_date?: string
+          updated_at?: string
+          user_ip?: string
+        }
+        Relationships: []
+      }
+      user_reading_progress: {
+        Row: {
+          book_id: number
+          created_at: string | null
+          current_page: number | null
+          id: string
+          is_favorite: boolean | null
+          last_position: string | null
+          notes: string | null
+          progress_percent: number | null
+          reading_time_minutes: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          book_id: number
+          created_at?: string | null
+          current_page?: number | null
+          id?: string
+          is_favorite?: boolean | null
+          last_position?: string | null
+          notes?: string | null
+          progress_percent?: number | null
+          reading_time_minutes?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          book_id?: number
+          created_at?: string | null
+          current_page?: number | null
+          id?: string
+          is_favorite?: boolean | null
+          last_position?: string | null
+          notes?: string | null
+          progress_percent?: number | null
+          reading_time_minutes?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_recents: {
+        Row: {
+          accessed_at: string
+          area: string
+          assunto: string
+          assunto_id: number
+          id: string
+          modulo: string
+          tema: string
+          user_id: string
+        }
+        Insert: {
+          accessed_at?: string
+          area: string
+          assunto: string
+          assunto_id: number
+          id?: string
+          modulo: string
+          tema: string
+          user_id: string
+        }
+        Update: {
+          accessed_at?: string
+          area?: string
+          assunto?: string
+          assunto_id?: number
+          id?: string
+          modulo?: string
+          tema?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_scores: {
+        Row: {
+          area: string | null
+          correct_answers: number
+          created_at: string
+          game_mode: string
+          id: string
+          score: number
+          session_date: string
+          study_mode: string | null
+          tema: string | null
+          time_spent: number | null
+          total_questions: number
+          user_id: string
+        }
+        Insert: {
+          area?: string | null
+          correct_answers?: number
+          created_at?: string
+          game_mode: string
+          id?: string
+          score?: number
+          session_date?: string
+          study_mode?: string | null
+          tema?: string | null
+          time_spent?: number | null
+          total_questions?: number
+          user_id: string
+        }
+        Update: {
+          area?: string | null
+          correct_answers?: number
+          created_at?: string
+          game_mode?: string
+          id?: string
+          score?: number
+          session_date?: string
+          study_mode?: string | null
+          tema?: string | null
+          time_spent?: number | null
+          total_questions?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          created_at: string
+          difficulty_preference: string
+          id: string
+          sound_enabled: boolean
+          theme: string
+          timer_duration: number
+          timer_enabled: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          difficulty_preference?: string
+          id?: string
+          sound_enabled?: boolean
+          theme?: string
+          timer_duration?: number
+          timer_enabled?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          difficulty_preference?: string
+          id?: string
+          sound_enabled?: boolean
+          theme?: string
+          timer_duration?: number
+          timer_enabled?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_statistics: {
         Row: {
           created_at: string | null
@@ -4871,6 +7279,78 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
           videos_assistidos?: number | null
+        }
+        Relationships: []
+      }
+      user_stats: {
+        Row: {
+          books_read: number | null
+          created_at: string | null
+          id: string
+          last_activity_date: string | null
+          pages_read: number | null
+          reading_streak_days: number | null
+          total_reading_time_minutes: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          books_read?: number | null
+          created_at?: string | null
+          id?: string
+          last_activity_date?: string | null
+          pages_read?: number | null
+          reading_streak_days?: number | null
+          total_reading_time_minutes?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          books_read?: number | null
+          created_at?: string | null
+          id?: string
+          last_activity_date?: string | null
+          pages_read?: number | null
+          reading_streak_days?: number | null
+          total_reading_time_minutes?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_study_sessions: {
+        Row: {
+          area: string | null
+          completed_at: string | null
+          correct_answers: number
+          created_at: string
+          id: string
+          mode: string
+          questions_answered: number
+          total_time: number
+          user_id: string
+        }
+        Insert: {
+          area?: string | null
+          completed_at?: string | null
+          correct_answers?: number
+          created_at?: string
+          id?: string
+          mode: string
+          questions_answered?: number
+          total_time?: number
+          user_id: string
+        }
+        Update: {
+          area?: string | null
+          completed_at?: string | null
+          correct_answers?: number
+          created_at?: string
+          id?: string
+          mode?: string
+          questions_answered?: number
+          total_time?: number
+          user_id?: string
         }
         Relationships: []
       }
@@ -5060,6 +7540,45 @@ export type Database = {
         }
         Relationships: []
       }
+      video_progress: {
+        Row: {
+          content_id: number
+          content_title: string
+          created_at: string
+          duration_seconds: number
+          id: string
+          last_watched: string
+          progress_percentage: number
+          progress_seconds: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content_id: number
+          content_title: string
+          created_at?: string
+          duration_seconds?: number
+          id?: string
+          last_watched?: string
+          progress_percentage?: number
+          progress_seconds?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content_id?: number
+          content_title?: string
+          created_at?: string
+          duration_seconds?: number
+          id?: string
+          last_watched?: string
+          progress_percentage?: number
+          progress_seconds?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       video_questions: {
         Row: {
           ai_generated: boolean | null
@@ -5154,6 +7673,10 @@ export type Database = {
       }
     }
     Functions: {
+      activate_premium: {
+        Args: { user_uuid: string }
+        Returns: undefined
+      }
       calculate_user_progress: {
         Args: { user_uuid: string }
         Returns: number
@@ -5167,17 +7690,45 @@ export type Database = {
         Returns: string
       }
       get_content_details: {
-        Args: { p_content_type: string; p_content_ids: string[] }
+        Args: { p_content_ids: string[]; p_content_type: string }
         Returns: Json
+      }
+      get_most_clicked_products_with_videos: {
+        Args: { limit_count?: number }
+        Returns: {
+          categoria: string
+          click_count: number
+          id: number
+          imagem1: string
+          imagem2: string
+          imagem3: string
+          imagem4: string
+          imagem5: string
+          link: string
+          produto: string
+          valor: string
+          video: string
+        }[]
+      }
+      get_most_purchased_products: {
+        Args: { limit_count?: number }
+        Returns: {
+          last_purchase: string
+          product_category: string
+          product_id: number
+          product_name: string
+          product_value: string
+          purchase_count: number
+        }[]
       }
       get_simulado_leaderboard: {
         Args: { _categoria: string; _limit?: number }
         Returns: {
-          user_id: string
-          total_respondidas: number
-          total_acertos: number
           percentual: number
           rank: number
+          total_acertos: number
+          total_respondidas: number
+          user_id: string
         }[]
       }
       get_view_history: {
@@ -5190,18 +7741,18 @@ export type Database = {
         }[]
       }
       increment_user_statistic: {
-        Args: { p_user_id: string; p_field: string; p_amount?: number }
+        Args: { p_amount?: number; p_field: string; p_user_id: string }
         Returns: undefined
       }
       list_bucket_files: {
         Args: { bucket_name: string }
         Returns: {
-          name: string
-          id: string
-          updated_at: string
           created_at: string
+          id: string
           last_accessed_at: string
           metadata: Json
+          name: string
+          updated_at: string
         }[]
       }
       list_tables: {
@@ -5227,7 +7778,17 @@ export type Database = {
         Returns: undefined
       }
       track_book_view: {
-        Args: { p_livro_id: string }
+        Args: { p_book_id: number } | { p_livro_id: string }
+        Returns: undefined
+      }
+      update_user_recent: {
+        Args: {
+          p_area: string
+          p_assunto: string
+          p_assunto_id: number
+          p_modulo: string
+          p_tema: string
+        }
         Returns: undefined
       }
     }
@@ -5240,21 +7801,25 @@ export type Database = {
   }
 }
 
-type DefaultSchema = Database[Extract<keyof Database, "public">]
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
@@ -5272,14 +7837,16 @@ export type Tables<
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
@@ -5295,14 +7862,16 @@ export type TablesInsert<
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
@@ -5318,14 +7887,16 @@ export type TablesUpdate<
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
@@ -5333,14 +7904,16 @@ export type Enums<
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

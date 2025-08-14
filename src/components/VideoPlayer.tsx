@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactPlayer from 'react-player';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
 import { Play, Pause, Volume2, VolumeX, Maximize2, X } from 'lucide-react';
@@ -25,15 +24,14 @@ const convertGoogleDriveUrl = (url: string) => {
 
 const VideoPlayer = ({ content, isOpen, onClose }: VideoPlayerProps) => {
   const [playing, setPlaying] = useState(false);
-  const [played, setPlayed] = useState(0);
-  const [loaded, setLoaded] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const [muted, setMuted] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [showControls, setShowControls] = useState(true);
   
-  const playerRef = useRef<ReactPlayer>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout>();
 
@@ -54,30 +52,31 @@ const VideoPlayer = ({ content, isOpen, onClose }: VideoPlayerProps) => {
         .select('progress_seconds, progress_percentage')
         .eq('user_id', user.user.id)
         .eq('content_id', content.id)
-        .single();
+        .maybeSingle();
 
-      if (data && data.progress_percentage > 0.05) {
-        setPlayed(data.progress_percentage);
-        if (playerRef.current) {
-          playerRef.current.seekTo(data.progress_percentage);
-        }
+      if (data && data.progress_seconds > 0 && videoRef.current) {
+        videoRef.current.currentTime = data.progress_seconds;
+        setCurrentTime(data.progress_seconds);
       }
     } catch (error) {
       console.error('Erro ao carregar progresso:', error);
     }
   };
 
-  const saveProgress = async (playedSeconds: number, playedFraction: number) => {
+  const saveProgress = async () => {
     try {
       const { data: user } = await supabase.auth.getUser();
-      if (!user.user) return;
+      if (!user.user || !videoRef.current) return;
+
+      const video = videoRef.current;
+      const progressPercentage = duration > 0 ? (video.currentTime / duration) : 0;
 
       await supabase.from('video_progress').upsert({
         user_id: user.user.id,
         content_id: content.id,
         content_title: content.nome,
-        progress_seconds: playedSeconds,
-        progress_percentage: playedFraction,
+        progress_seconds: video.currentTime,
+        progress_percentage: progressPercentage,
         duration_seconds: duration,
         last_watched: new Date().toISOString()
       });
@@ -86,46 +85,74 @@ const VideoPlayer = ({ content, isOpen, onClose }: VideoPlayerProps) => {
     }
   };
 
-  const handleProgress = (state: any) => {
-    setPlayed(state.played);
-    setLoaded(state.loaded);
-    
-    // Salva progresso a cada 10 segundos
-    if (Math.floor(state.playedSeconds) % 10 === 0) {
-      saveProgress(state.playedSeconds, state.played);
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+      
+      // Salva progresso a cada 10 segundos
+      if (Math.floor(videoRef.current.currentTime) % 10 === 0) {
+        saveProgress();
+      }
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
     }
   };
 
   const handlePlayPause = () => {
-    setPlaying(!playing);
-    showControlsTemporarily();
+    if (videoRef.current) {
+      if (playing) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setPlaying(!playing);
+      showControlsTemporarily();
+    }
   };
 
   const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPlayed = parseFloat(e.target.value);
-    setPlayed(newPlayed);
-    if (playerRef.current) {
-      playerRef.current.seekTo(newPlayed);
+    const newTime = parseFloat(e.target.value);
+    if (videoRef.current) {
+      videoRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
     }
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVolume(parseFloat(e.target.value));
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (videoRef.current) {
+      videoRef.current.volume = newVolume;
+    }
   };
 
   const toggleMute = () => {
-    setMuted(!muted);
+    if (videoRef.current) {
+      videoRef.current.muted = !muted;
+      setMuted(!muted);
+    }
   };
 
   const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      containerRef.current?.requestFullscreen();
+    if (!document.fullscreenElement && containerRef.current) {
+      containerRef.current.requestFullscreen();
       setFullscreen(true);
-      // Força orientação landscape no mobile
-      if (screen.orientation) {
-        screen.orientation.lock('landscape').catch(() => {});
+      // Força orientação landscape no mobile se disponível
+      try {
+        if ('screen' in window && 'orientation' in screen) {
+          const orientation = screen.orientation as any;
+          if (orientation && orientation.lock) {
+            orientation.lock('landscape').catch(() => {});
+          }
+        }
+      } catch (error) {
+        console.log('Orientation lock not supported');
       }
-    } else {
+    } else if (document.fullscreenElement) {
       document.exitFullscreen();
       setFullscreen(false);
     }
@@ -153,6 +180,8 @@ const VideoPlayer = ({ content, isOpen, onClose }: VideoPlayerProps) => {
     return null;
   }
 
+  const progressPercentage = duration > 0 ? (currentTime / duration) : 0;
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl p-0 bg-black border-none">
@@ -166,28 +195,19 @@ const VideoPlayer = ({ content, isOpen, onClose }: VideoPlayerProps) => {
             <X className="h-6 w-6" />
           </DialogClose>
 
-          <ReactPlayer
-            ref={playerRef}
-            url={videoUrl}
-            width="100%"
-            height="100%"
-            playing={playing}
-            volume={volume}
-            muted={muted}
-            onProgress={handleProgress}
-            onDuration={setDuration}
+          <video
+            ref={videoRef}
+            src={videoUrl}
+            className="w-full h-full object-contain"
+            onTimeUpdate={handleTimeUpdate}
+            onLoadedMetadata={handleLoadedMetadata}
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
             onEnded={() => {
               setPlaying(false);
-              saveProgress(duration, 1);
+              saveProgress();
             }}
-            controls={false}
-            config={{
-              file: {
-                attributes: {
-                  crossOrigin: 'anonymous'
-                }
-              }
-            }}
+            onClick={handlePlayPause}
           />
 
           {/* Controles customizados */}
@@ -219,14 +239,14 @@ const VideoPlayer = ({ content, isOpen, onClose }: VideoPlayerProps) => {
               {/* Barra de progresso */}
               <div className="flex items-center space-x-2">
                 <span className="text-white text-sm min-w-[50px]">
-                  {formatTime(played * duration)}
+                  {formatTime(currentTime)}
                 </span>
                 <input
                   type="range"
                   min={0}
-                  max={1}
-                  step={0.01}
-                  value={played}
+                  max={duration}
+                  step={1}
+                  value={currentTime}
                   onChange={handleSeekChange}
                   className="flex-1 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-red-600 [&::-webkit-slider-thumb]:rounded-full"
                 />
@@ -270,7 +290,7 @@ const VideoPlayer = ({ content, isOpen, onClose }: VideoPlayerProps) => {
 
                 <div className="flex items-center space-x-2">
                   <span className="text-white text-sm">
-                    {Math.round(played * 100)}% assistido
+                    {Math.round(progressPercentage * 100)}% assistido
                   </span>
                   <Button
                     variant="ghost"
