@@ -13,12 +13,13 @@ export interface Content {
   beneficios: string;
   link: string;
   trailer: string;
+  linkVideo?: string;
 }
 
 export async function getAllContent(): Promise<Content[]> {
   const { data, error } = await supabase
     .from('Jurisflix')
-    .select('*')
+    .select('*, "link Video" as linkVideo')
     .order('nome');
 
   if (error) {
@@ -32,7 +33,7 @@ export async function getAllContent(): Promise<Content[]> {
 export async function getContentByType(type: string): Promise<Content[]> {
   const { data, error } = await supabase
     .from('Jurisflix')
-    .select('*')
+    .select('*, "link Video" as linkVideo')
     .eq('tipo', type)
     .order('nome');
 
